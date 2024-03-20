@@ -1,0 +1,19 @@
+<!-- app/views/cryptocurrencies/index.html.erb -->
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-dark">
+    <tr>
+      <th>Criptomoneda</th>
+      <th>Valor actual en USD</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% [@bitcoin_data, @ether_data, @cardano_data].each do |crypto_data| %>
+      <tr>
+        <td><%= crypto_data["asset_id_base"] %></td>
+        <td><%= number_to_currency(crypto_data["rate"], unit: "USD") %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
