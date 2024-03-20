@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+currencies = {
+  "Bitcoin" => "BTC",
+  "Ethereum" => "ETH",
+  "Cardano" => "ADA"
+}
+
+currencies.each do |name, symb|
+  Crypto.create!(name: name, symbol: symb)
+end

@@ -13,3 +13,64 @@
  *= require_tree .
  *= require_self
  */
+
+.btn-group button {
+    font-size: 16px;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 20px;
+    background-color: #e6e7e9;
+    color: #333;
+}
+.crypto-list {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.crypto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e7e9;
+    padding: 10px 0;
+}
+.crypto-item:last-child {
+    border-bottom: none;
+}
+.crypto-item img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+.crypto-name {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #333;
+}
+.crypto-price {
+    font-size: 18px;
+    color: #333;
+}
+.star {
+    color: #f0b90b;
+    margin-right: 5px;
+}
+
+
+.content {
+    width: 90%; /* Ancho inicial para dispositivos más pequeños */
+    max-width: 50%; /* Máximo ancho para pantallas más grandes */
+    margin: 2em auto; /* Margen superior de 2em y centrado horizontal */
+    text-align: center; /* Centra el texto dentro del contenedor */
+}
+
+/* Media query para pantallas más grandes que 768px */
+@media (min-width: 768px) {
+    .content {
+        width: 50%;
+    }
+}
+
