@@ -4,6 +4,11 @@
     <%= form.number_field :amount, step: 0.01, min: 0, required: true, id: "amountInvested", class: "form-control" %>
   </div>
 
+  <div class="field">
+    <%= form.label :period, "Investment Period (months)" %>
+    <%= form.select :period, options_for_select((1..12).to_a), {id: "period"}, {class: "form-control"} %>
+  </div>
+
   <div class="actions" style="margin-top: 2em">
     <%= form.submit "Create Investment", class: "btn btn-primary" %>
   </div>
@@ -18,25 +23,26 @@
     document.addEventListener("DOMContentLoaded", function() {
         var cryptocurrenciesData = <%= raw @cryptocurrencies.to_json.html_safe %>;
         const amountInput = document.getElementById('amountInvested');
+        const periodSelect = document.getElementById('period');
 
         function updateCryptoDetails() {
             const amountInvested = parseFloat(amountInput.value) || 0;
-            document.querySelectorAll(".custom-disabled-input").forEach(input => {
-                input.value = amountInvested.toFixed(2);
-            });
+            const periodInMonths = parseInt(periodSelect.value);
+            const periodInYears = periodInMonths / 12;
 
             cryptocurrenciesData.forEach(crypto => {
-                const monthlyReturn = amountInvested * (crypto.monthly_return_percentage / 100);
-                const totalInvestment = amountInvested + monthlyReturn;
+                const monthlyRate = crypto.monthly_return_percentage / 100;
+                const compoundInterest = amountInvested * Math.pow((1 + monthlyRate), periodInMonths);
                 const cryptoQuantity = amountInvested / crypto.price;
 
                 document.getElementById(`invest-${crypto.symbol}`).value = amountInvested.toFixed(2);
                 document.getElementById(`quantity-${crypto.symbol}`).value = cryptoQuantity.toFixed(4);
-                document.getElementById(`benefit-${crypto.symbol}`).value = monthlyReturn.toFixed(2);
-                document.getElementById(`total-${crypto.symbol}`).value = totalInvestment.toFixed(2);
+                document.getElementById(`benefit-${crypto.symbol}`).value = (compoundInterest - amountInvested).toFixed(2);
+                document.getElementById(`total-${crypto.symbol}`).value = compoundInterest.toFixed(2);
             });
         }
 
         amountInput.addEventListener('input', updateCryptoDetails);
+        periodSelect.addEventListener('change', updateCryptoDetails);
     });
 </script>

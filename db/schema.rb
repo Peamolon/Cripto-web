@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_223530) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_21_035346) do
   create_table "cryptos", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "monthly_return"
   end
 
   create_table "investments", force: :cascade do |t|
@@ -25,6 +26,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_223530) do
     t.decimal "cardano_return"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.string "bitcoin_taken_value"
+    t.string "ethereum_taken_value"
+    t.string "cardano_taken_value"
+    t.integer "period"
+    t.index ["user_id"], name: "index_investments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -39,4 +46,5 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_223530) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "investments", "users"
 end

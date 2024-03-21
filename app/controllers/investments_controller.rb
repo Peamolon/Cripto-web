@@ -8,6 +8,13 @@ class InvestmentsController < ApplicationController
   end
 
   def create
-    puts "Entra aqui"
+    @investment = ::Investments::InvestmentService.call(investment_params)
+
+  end
+
+  private
+
+  def investment_params
+    params.require(:investment).permit(:amount)
   end
 end
