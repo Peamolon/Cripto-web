@@ -9,10 +9,6 @@
     <%= form.select :period, options_for_select((1..12).to_a), {id: "period"}, {class: "form-control"} %>
   </div>
 
-  <div class="actions" style="margin-top: 2em">
-    <%= form.submit "Create Investment", class: "btn btn-primary" %>
-  </div>
-
   <%= render 'cryptocurrencies/returns_container', cryptocurrencies: @cryptocurrencies %>
 <% end %>
 
@@ -28,7 +24,6 @@
         function updateCryptoDetails() {
             const amountInvested = parseFloat(amountInput.value) || 0;
             const periodInMonths = parseInt(periodSelect.value);
-            const periodInYears = periodInMonths / 12;
 
             cryptocurrenciesData.forEach(crypto => {
                 const monthlyRate = crypto.monthly_return_percentage / 100;
