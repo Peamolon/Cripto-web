@@ -5,7 +5,7 @@ require 'json'
 module Coinapi
   class CoinapiClient
     BASE_URL = Rails.application.credentials.coinapi[:base_url]
-    API_KEY = Rails.application.credentials.coinapi[:api_key]
+    API_KEY = '102C2A32-127C-4C4C-A840-64DF208A8301'#Rails.application.credentials.coinapi[:api_key]
 
     DEFAULT_CURRENCY_VALUE = 'USD'.freeze
     public_constant :DEFAULT_CURRENCY_VALUE
@@ -13,7 +13,7 @@ module Coinapi
     def self.fetch_cryptocurrency_data(symbol)
       uri = URI("#{BASE_URL}/exchangerate/#{symbol}/#{DEFAULT_CURRENCY_VALUE}")
       request = Net::HTTP::Get.new(uri)
-      request["X-CoinAPI-Key"] = '102C2A32-127C-4C4C-A840-64DF208A8301'#API_KEY
+      request["X-CoinAPI-Key"] = '6623FA27-136E-4877-8A6C-45C080AA2BC5'#API_KEY
 
       response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
         http.request(request)
