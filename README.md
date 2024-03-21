@@ -1,25 +1,46 @@
-# README
+# Calculadora de Inversión en Criptomonedas
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Esta aplicación web permite a los usuarios definir un balance en dólares para invertir en Bitcoin (BTC), Ether (ETH) y Cardano (ADA), calculando la ganancia anual proyectada para cada criptomoneda basada en retornos mensuales específicos. Además, muestra el balance final proyectado en dólares y su equivalente en criptomonedas. La aplicación también presenta una tabla actualizada en tiempo real con información sobre estas tres criptomonedas, con opciones para exportar los datos a CSV y JSON.
 
-Things you may want to cover:
+## Características
 
-* Ruby version
+- Calculadora de inversión para BTC, ETH y ADA con ganancias anuales proyectadas.
+- Visualización del balance final proyectado en dólares.
+- Tabla en tiempo real con información actualizada sobre BTC, ETH y ADA.
+- Opción de exportar datos de la tabla en formatos CSV y JSON.
 
-* System dependencies
+## Tecnologías Utilizadas
 
-* Configuration
+- Ruby on Rails 
+- JavaScript
+- API de CoinAPI para datos en tiempo real de criptomonedas.
+- Webscokets usando Action Cable para actualizaciones en tiempo real.
+- Sidekiq para procesamiento en segundo plano.
+- Rspec para testing
 
-* Database creation
+## Configuración
 
-* Database initialization
+Para configurar y ejecutar este proyecto localmente, sigue estos pasos:
 
-* How to run the test suite
+```bash
+git clone https://github.com/<tu_usuario>/<tu_repositorio>.git
+cd <tu_repositorio>
+bundle install
+yarn install
+rails db:create db:migrate
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Para correr los spec
+```bash
+bundle exec rspec
 
-* Deployment instructions
+```
 
-* ...
-# Cripto-web
+Para correr los workers que actualizan los precios en tiempo real 
+```bash
+bundle exec sidekiq
+
+```
+
+
+
