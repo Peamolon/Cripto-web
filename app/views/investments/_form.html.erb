@@ -1,0 +1,42 @@
+<%= form_with model: @investment, url: investments_path, method: :post, local: true do |form| %>
+  <div class="field">
+    <%= form.label :amount, "Amount to invest in USD" %>
+    <%= form.number_field :amount, step: 0.01, min: 0, required: true, id: "amountInvested", class: "form-control" %>
+  </div>
+
+  <div class="actions" style="margin-top: 2em">
+    <%= form.submit "Create Investment", class: "btn btn-primary" %>
+  </div>
+
+  <%= render 'cryptocurrencies/returns_container', cryptocurrencies: @cryptocurrencies %>
+<% end %>
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var cryptocurrenciesData = <%= raw @cryptocurrencies.to_json.html_safe %>;
+        const amountInput = document.getElementById('amountInvested');
+
+        function updateCryptoDetails() {
+            const amountInvested = parseFloat(amountInput.value) || 0;
+            document.querySelectorAll(".custom-disabled-input").forEach(input => {
+                input.value = amountInvested.toFixed(2);
+            });
+
+            cryptocurrenciesData.forEach(crypto => {
+                const monthlyReturn = amountInvested * (crypto.monthly_return_percentage / 100);
+                const totalInvestment = amountInvested + monthlyReturn;
+                const cryptoQuantity = amountInvested / crypto.price;
+
+                document.getElementById(`invest-${crypto.symbol}`).value = amountInvested.toFixed(2);
+                document.getElementById(`quantity-${crypto.symbol}`).value = cryptoQuantity.toFixed(4);
+                document.getElementById(`benefit-${crypto.symbol}`).value = monthlyReturn.toFixed(2);
+                document.getElementById(`total-${crypto.symbol}`).value = totalInvestment.toFixed(2);
+            });
+        }
+
+        amountInput.addEventListener('input', updateCryptoDetails);
+    });
+</script>

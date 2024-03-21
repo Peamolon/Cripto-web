@@ -1,0 +1,5 @@
+<div class="d-flex flex-row flex-wrap justify-content-center" id="returnsContainer" style="margin-top: 4em" >
+  <% cryptocurrencies.each do |crypto| %>
+    <%= render 'cryptocurrencies/crypto_detail', crypto: crypto %>
+  <% end %>
+</div>

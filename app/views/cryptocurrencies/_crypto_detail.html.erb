@@ -1,0 +1,33 @@
+<div class="col mb-4 m-2 d-flex justify-content-center" style="max-width: 100%;">
+  <div class="card shadow-sm p-4" style="min-width: 320px; max-width: 600px;">
+    <h5 class="card-title text-center mb-4">Your Investment in <%= crypto[:name] %></h5>
+    <div class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">$ Invest (USD)</span>
+        <input type="text" id="invest-<%= crypto[:symbol] %>" disabled="true" class="form-control custom-disabled-input" value="0.00">
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">
+          <%= image_tag "#{crypto[:symbol].upcase}.png", alt: crypto[:name], style: "width: 25px; height: 25px;" %>
+          <%= crypto[:symbol] %>
+        </span>
+        <input type="text" id="quantity-<%= crypto[:symbol] %>" disabled="true" class="form-control custom-disabled-input" value="0.00">
+      </div>
+      <span class="d-block mt-2">Crypto <%= crypto[:name] %> has a return of <%= number_to_percentage(crypto[:monthly_return_percentage], precision: 2) %> monthly</span>
+    </div>
+    <div class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">$ Benefit</span>
+        <input type="text" id="benefit-<%= crypto[:symbol] %>" disabled="true" class="form-control custom-disabled-input" value="0.00">
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="input-group">
+        <span class="input-group-text">$ Total amount</span>
+        <input type="text" id="total-<%= crypto[:symbol] %>" disabled="true" class="form-control custom-disabled-input" value="0.00">
+      </div>
+    </div>
+  </div>
+</div>

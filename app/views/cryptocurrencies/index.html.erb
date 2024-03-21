@@ -4,23 +4,13 @@
       <h1 style="margin-right: 10px;">
         Crypto prices
       </h1>
-      <span>
-        9,162 assets
-      </span>
+      <span>9,162 assets</span>
     </div>
     <div class="btn-group">
-      <button>
-        All assets
-      </button>
-      <button>
-        Tradable
-      </button>
-      <button>
-        Gainers
-      </button>
-      <button>
-        Losers
-      </button>
+      <button>All assets</button>
+      <button>Tradable</button>
+      <button>Gainers</button>
+      <button>Losers</button>
     </div>
   </div>
   <div class="crypto-list">
@@ -36,7 +26,7 @@
     <% @cryptocurrencies.each do |crypto| %>
       <div class="crypto-item">
         <div class="crypto-name">
-          <i class="fas fa-star" style="color: white; text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black; margin-right: 5px; vertical-align: middle;"></i>
+          <i class="fas fa-star" style="color: white; text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black; margin-right: 2em; vertical-align: middle; font-size: 12px;"></i>
           <%= image_tag "#{crypto[:symbol].upcase}.png", alt: crypto[:name], style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
           <%= crypto[:name] %> (<span class="text-muted"><%= crypto[:symbol] %></span>)
         </div>
@@ -45,6 +35,37 @@
         </div>
       </div>
     <% end %>
+    <br />
+    <button id="showFormButton" class="btn btn-primary">Add Investment</button>
+
+    <div id="investmentForm" style="display: none;">
+      <%= render 'investments/form', investment: @investment, cryptocurrencies: @cryptocurrencies  %>
+    </div>
 
   </div>
 </div>
+
+
+<script>
+    document.getElementById('showFormButton').addEventListener('click', function() {
+        document.getElementById('investmentForm').style.display = 'block';
+        this.style.display = 'none';
+    });
+
+    var cryptocurrenciesData = <%= raw @cryptocurrencies.to_json %>;
+
+    cryptocurrenciesData.forEach(crypto => {
+        switch(crypto.symbol) {
+            case 'BTC':
+                crypto.monthlyReturnPercentage = 5;
+                break;
+            case 'ETH':
+                crypto.monthlyReturnPercentage = 4.2;
+                break;
+            case 'ADA':
+                crypto.monthlyReturnPercentage = 1;
+                break;
+        }
+    });
+
+</script>

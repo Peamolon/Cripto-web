@@ -61,16 +61,20 @@
 
 
 .content {
-    width: 90%; /* Ancho inicial para dispositivos más pequeños */
-    max-width: 50%; /* Máximo ancho para pantallas más grandes */
-    margin: 2em auto; /* Margen superior de 2em y centrado horizontal */
-    text-align: center; /* Centra el texto dentro del contenedor */
+    width: 90%;
+    max-width: 60%;
+    margin: 2em auto;
+    text-align: center;
 }
 
-/* Media query para pantallas más grandes que 768px */
+
 @media (min-width: 768px) {
     .content {
-        width: 50%;
+        width: 60%;
     }
 }
 
+.custom-disabled-input {
+    background-color: white !important;
+    color: black !important;
+}

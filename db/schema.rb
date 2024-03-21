@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_215759) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_20_223530) do
   create_table "cryptos", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "investments", force: :cascade do |t|
+    t.decimal "amount"
+    t.decimal "bitcoin_return"
+    t.decimal "ether_return"
+    t.decimal "cardano_return"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
