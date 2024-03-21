@@ -10,6 +10,9 @@ consumer.subscriptions.create("CryptocurrenciesChannel", {
   },
 
   received(data) {
-    // Called when there's incoming data on the websocket for this channel
+    const priceElement = document.querySelector(`#crypto-price-${data.id}`);
+    if (priceElement) {
+      priceElement.textContent = `$${parseFloat(data.price).toFixed(2)}`;
+    }
   }
 });
