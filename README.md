@@ -30,6 +30,8 @@ yarn install
 rails db:create db:migrate
 ```
 
+Hay que configurar la coinapi **API-KEY** y la **BASE_URL** desde Rails.application.credentials
+
 Para correr los spec
 ```bash
 bundle exec rspec
