@@ -29,7 +29,7 @@
           <%= image_tag "#{crypto[:symbol].upcase}.png", alt: crypto[:name], style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
           <%= crypto[:name] %> (<span class="text-muted"><%= crypto[:symbol] %></span>)
         </div>
-        <div class="crypto-price">
+        <div class="crypto-price" id="crypto-price-<%= crypto[:id] %>">
           <%= number_to_currency(crypto[:price]) %>
         </div>
       </div>

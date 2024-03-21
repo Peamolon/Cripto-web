@@ -5,21 +5,18 @@ require 'json'
 module Coinapi
   class CoinapiClient
     BASE_URL = Rails.application.credentials.coinapi[:base_url]
-    API_KEY = '102C2A32-127C-4C4C-A840-64DF208A8301'#Rails.application.credentials.coinapi[:api_key]
+    API_KEY = '144C7895-9689-4461-BC91-3DCC72AD225C'#Rails.application.credentials.coinapi[:api_key]
 
     DEFAULT_CURRENCY_VALUE = 'USD'.freeze
-    public_constant :DEFAULT_CURRENCY_VALUE
 
     def self.fetch_cryptocurrency_data(symbol)
-      uri = URI("#{BASE_URL}/exchangerate/#{symbol}/#{DEFAULT_CURRENCY_VALUE}")
-      request = Net::HTTP::Get.new(uri)
-      request["X-CoinAPI-Key"] = '6623FA27-136E-4877-8A6C-45C080AA2BC5'#API_KEY
+      uri = build_uri(symbol)
+      request = build_request(uri)
 
-      response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
-        http.request(request)
-      end
-
-      JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
+      response = perform_request(uri, request)
+      parse_response(response)
+    rescue StandardError => e
+      Rails.logger.error "CoinapiClient error: #{e.message}"
     end
 
     def self.fake_cryptocurrency_data(symbol)
@@ -31,5 +28,26 @@ module Coinapi
 
       mock_responses[symbol]
     end
+
+    private
+
+    def self.build_uri(symbol)
+      URI("#{BASE_URL}/exchangerate/#{symbol}/#{DEFAULT_CURRENCY_VALUE}")
+    end
+
+    def self.build_request(uri)
+      request = Net::HTTP::Get.new(uri)
+      request["X-CoinAPI-Key"] = API_KEY
+      request
+    end
+
+    def self.perform_request(uri, request)
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(request) }
+    end
+
+    def self.parse_response(response)
+      JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
+    end
   end
 end
+
