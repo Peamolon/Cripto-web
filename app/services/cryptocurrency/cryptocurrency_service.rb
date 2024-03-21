@@ -19,7 +19,7 @@ module Cryptocurrency
       Crypto.all.each do |crypto|
         data = ::Coinapi::CoinapiClient.fetch_cryptocurrency_data(crypto.symbol)
         ActionCable.server.broadcast(
-          "cryptocurrency_channel",
+          "cryptocurrencies_channel",
           {
             id: crypto.id,
             price: data["rate"]

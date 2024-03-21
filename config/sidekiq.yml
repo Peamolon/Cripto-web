@@ -1,0 +1,13 @@
+---
+:concurrency: 10
+:queues:
+  - default
+
+:scheduler:
+  enabled: true
+  schedule:
+    update_cryptocurrency_prices:
+      every: ['30s', first_in: '0s']
+      class: UpdateCryptocurrencyPricesJob
+      queue: default
+      description: "Este trabajo actualiza los precios de las criptomonedas cada 30 segundos."
