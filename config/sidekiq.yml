@@ -7,7 +7,7 @@
   enabled: true
   schedule:
     update_cryptocurrency_prices:
-      every: ['30s', first_in: '0s']
+      every: ['10s', first_in: '0s']
       class: UpdateCryptocurrencyPricesJob
       queue: default
-      description: "Este trabajo actualiza los precios de las criptomonedas cada 30 segundos."
+      description: "Job to update crypto prices in real life"

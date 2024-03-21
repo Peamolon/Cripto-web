@@ -5,7 +5,7 @@ require 'json'
 module Coinapi
   class CoinapiClient
     BASE_URL = Rails.application.credentials.coinapi[:base_url]
-    API_KEY = '144C7895-9689-4461-BC91-3DCC72AD225C'#Rails.application.credentials.coinapi[:api_key]
+    API_KEY = Rails.application.credentials.coinapi[:api_key]
 
     DEFAULT_CURRENCY_VALUE = 'USD'.freeze
 
