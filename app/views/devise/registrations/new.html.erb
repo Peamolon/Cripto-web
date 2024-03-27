@@ -25,6 +25,10 @@
               <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: "Confirm password", required: "" %>
             </div>
 
+            <div class="mb-3">
+              <%= f.text_field :user_code, placeholder: 'Reference code (optional)', class: 'form-control' %>
+            </div>
+
             <div class="actions">
               <%= f.submit "Sign up", class: 'btn btn-primary w-100' %>
             </div>
