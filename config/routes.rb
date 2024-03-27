@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  get 'children/index'
   resources :investments, only: [:new, :create]
+  resources :childrens, only: :index
 
   resources :cryptocurrencies do
     collection do

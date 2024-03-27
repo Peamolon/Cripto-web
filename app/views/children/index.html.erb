@@ -1,0 +1,57 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="p-4 border rounded-3 bg-light text-center">
+        <h4 class="mb-3">Refer more users using this code:</h4>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control text-center" id="userCode" value="<%= current_user.user_code %>" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" id="copyButton" data-toggle="tooltip" data-placement="top" title="Copy to clipboard">
+              <i class="far fa-copy"></i>
+            </button>
+          </div>
+        </div>
+        <p>Share your unique code with friends and family to invite them to join.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h2 class="text-center">My Referrals</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <% @children.each do |child| %>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="https://avatar.iran.liara.run/public?id=<%= rand(1000) %>" class="card-img-top" alt="Avatar Aleatorio">          <div class="card-body">
+            <h5 class="card-title">Child Information</h5>
+            <p class="card-text"><strong>Email:</strong> <%= child.email %></p>
+            <p class="card-text"><strong>Joined:</strong> <%= child.created_at.strftime("%B %d, %Y") %></p>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Last updated <%= time_ago_in_words(child.updated_at) %> ago</small>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <%= paginate @children %>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.getElementById('copyButton').addEventListener('click', function() {
+        var userCode = document.getElementById('userCode');
+        userCode.select();
+        document.execCommand('copy');
+        this.setAttribute('title', 'Code copied!');
+        $(this).tooltip('show');
+    });
+</script>

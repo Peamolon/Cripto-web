@@ -11,6 +11,12 @@ class User < ApplicationRecord
   after_create :assign_default_role
   before_create :generate_user_code
 
+  def all_descendants
+    children.each_with_object(children.to_a) do |child, descendants|
+      descendants.concat(child.all_descendants)
+    end
+  end
+
   private
 
   def generate_user_code
