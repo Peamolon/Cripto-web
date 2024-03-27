@@ -3,7 +3,7 @@ module Cryptocurrency
     def self.fetch_cryptocurrencies_info
       cryptocurrencies = Crypto.all
       cryptocurrencies.map do |crypto|
-        data = ::Coinapi::CoinapiClient.fetch_cryptocurrency_data(crypto.symbol)
+        data = ::Coinapi::CoinapiClient.fake_cryptocurrency_data(crypto.symbol)
         monthly_return_percentage = calculate_monthly_return_for(crypto.symbol)
         {
           id: crypto.id,
