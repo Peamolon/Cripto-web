@@ -2,10 +2,6 @@ class InvestmentsController < ApplicationController
   before_action :authenticate_user!
   def new
     @investment = Investment.new
-
-    respond_to do |format|
-      format.js # Esto asume que tienes un archivo `new.js.erb` que maneja la respuesta.
-    end
   end
 
   def create

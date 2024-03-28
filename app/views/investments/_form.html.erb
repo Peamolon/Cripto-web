@@ -1,4 +1,4 @@
-<%= form_with model: @investment, url: investments_path, method: :post, local: true do |form| %>
+<%= form_with model: @investment, url: investments_path, scope: :investment, method: :post, local: true do |form| %>
   <div class="field">
     <%= form.label :amount, "Amount to invest in USD" %>
     <%= form.number_field :amount, step: 0.01, min: 0, required: true, id: "amountInvested", class: "form-control" %>
