@@ -34,6 +34,8 @@ gem 'sidekiq'
 
 gem 'sidekiq-scheduler'
 
+gem 'turbolinks', '~> 5.2.0'
+
 gem "rolify"
 
 gem 'kaminari'

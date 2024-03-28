@@ -6,38 +6,85 @@
 
   <div class="field">
     <%= form.label :period, "Investment Period (months)" %>
-    <%= form.select :period, options_for_select((1..12).to_a), {id: "period"}, {class: "form-control"} %>
+    <%= form.select :period, options_for_select((1..12).to_a), {id: "period" }, {class: "form-control"} %>
   </div>
 
-  <%= render 'cryptocurrencies/returns_container', cryptocurrencies: @cryptocurrencies %>
+  <div class="field">
+    <%= form.label :crypto_id, "Choose a cryptocurrency" %>
+    <%= form.select :crypto_id, options_for_select(@cryptocurrencies.map { |crypto| [crypto[:name], crypto[:id]] }), {include_blank: true}, {id: "cryptoSelect", class: "form-control", required: true} %>
+  </div>
+
+  <%= form.hidden_field :calculated_crypto_quantity, id: "calculated_crypto_quantity" %>
+  <%= form.hidden_field :calculated_benefit, id: "calculated_benefit" %>
+  <%= form.hidden_field :calculated_total_amount, id: "calculated_total_amount" %>
+
+  <%= render 'cryptocurrencies/returns_container', cryptocurrencies: @cryptocurrencies, form: form %>
+
+  <div class="actions">
+    <%= form.submit "Submit", class: "btn btn-primary" %>
+  </div>
 <% end %>
 
 
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var cryptocurrenciesData = <%= raw @cryptocurrencies.to_json.html_safe %>;
+    document.addEventListener("turbo:load", () => {
         const amountInput = document.getElementById('amountInvested');
         const periodSelect = document.getElementById('period');
+        const cryptoSelect = document.getElementById('cryptoSelect');
+        const returnsContainer = document.getElementById('returnsContainer');
+
+        const calculatedCryptoQuantity = document.getElementById('calculated_crypto_quantity');
+        const calculatedBenefit = document.getElementById('calculated_benefit');
+        const calculatedTotalAmount = document.getElementById('calculated_total_amount');
+
+        if (!amountInput || !periodSelect || !cryptoSelect || !returnsContainer) {
+            return;
+        }
+
+        var cryptocurrenciesData = <%= raw @cryptocurrencies.to_json.html_safe %>;
 
         function updateCryptoDetails() {
+            document.querySelectorAll('.crypto-detail .card').forEach(card => {
+                card.style.display = 'none';
+            });
+
             const amountInvested = parseFloat(amountInput.value) || 0;
             const periodInMonths = parseInt(periodSelect.value);
+            const selectedCryptoId = parseInt(cryptoSelect.value);
 
-            cryptocurrenciesData.forEach(crypto => {
-                const monthlyRate = crypto.monthly_return_percentage / 100;
-                const compoundInterest = amountInvested * Math.pow((1 + monthlyRate), periodInMonths);
-                const cryptoQuantity = amountInvested / crypto.price;
+            const crypto = cryptocurrenciesData.find(c => c.id === selectedCryptoId);
+            if (!crypto) return;
 
+            const monthlyRate = crypto.monthly_return_percentage / 100;
+            const compoundInterest = amountInvested * Math.pow((1 + monthlyRate), periodInMonths);
+            const cryptoQuantity = amountInvested / crypto.price;
+
+            const detailId = `crypto-detail-${crypto.symbol}`;
+            const selectedDetail = document.getElementById(detailId);
+
+            if (selectedDetail) {
                 document.getElementById(`invest-${crypto.symbol}`).value = amountInvested.toFixed(2);
                 document.getElementById(`quantity-${crypto.symbol}`).value = cryptoQuantity.toFixed(4);
                 document.getElementById(`benefit-${crypto.symbol}`).value = (compoundInterest - amountInvested).toFixed(2);
                 document.getElementById(`total-${crypto.symbol}`).value = compoundInterest.toFixed(2);
-            });
+                calculatedCryptoQuantity.value = cryptoQuantity.toFixed(4).toString();
+                calculatedBenefit.value = (compoundInterest - amountInvested).toFixed(2).toString();
+                calculatedTotalAmount.value = compoundInterest.toFixed(2).toString();
+
+                selectedDetail.style.display = 'block';
+
+                if (returnsContainer.firstChild !== selectedDetail) {
+                    returnsContainer.prepend(selectedDetail.parentNode);
+                }
+            }
         }
 
         amountInput.addEventListener('input', updateCryptoDetails);
         periodSelect.addEventListener('change', updateCryptoDetails);
+        cryptoSelect.addEventListener('change', updateCryptoDetails);
+
+        updateCryptoDetails();
     });
 </script>

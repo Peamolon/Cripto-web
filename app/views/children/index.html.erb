@@ -26,7 +26,8 @@
     <% @children.each do |child| %>
       <div class="col-md-4 mb-4">
         <div class="card h-100">
-          <img src="https://avatar.iran.liara.run/public?id=<%= rand(1000) %>" class="card-img-top" alt="Avatar Aleatorio">          <div class="card-body">
+          <img src="https://xsgames.co/randomusers/assets/avatars/<%= ["male", "female"].sample %>/<%=rand(30) %>.jpg" class="card-img-top" alt="Avatar Aleatorio">
+          <div class="card-body">
             <h5 class="card-title">Child Information</h5>
             <p class="card-text"><strong>Email:</strong> <%= child.email %></p>
             <p class="card-text"><strong>Joined:</strong> <%= child.created_at.strftime("%B %d, %Y") %></p>

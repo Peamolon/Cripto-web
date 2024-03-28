@@ -1,5 +1,5 @@
-<div class="col mb-4 m-2 d-flex justify-content-center" style="max-width: 100%;">
-  <div class="card shadow-sm p-4" style="min-width: 320px; max-width: 600px;">
+<div class="col mb-4 m-2 d-flex justify-content-center crypto-detail"  style="max-width: 100%;">
+  <div class="card shadow-sm p-4" id="crypto-detail-<%= crypto[:symbol] %>" style="min-width: 320px; max-width: 600px; display: none;">
     <h5 class="card-title text-center mb-4">Your Investment in <%= crypto[:name] %></h5>
     <div class="mb-3">
       <div class="input-group">
@@ -31,3 +31,4 @@
     </div>
   </div>
 </div>
+
