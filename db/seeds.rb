@@ -17,3 +17,11 @@ returns = [0.05, 0.042, 0.01]
 currencies.each_with_index do |(name, symbol), index|
   Crypto.create!(name: name, symbol: symbol, monthly_return: returns[index] * 100)
 end
+
+WALLET_TYPES = %w[
+  Investment
+  Profit
+  Release
+].freeze
+
+WALLET_TYPES.map{|type|  WalletType.create!(name_type: type)}

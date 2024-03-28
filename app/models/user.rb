@@ -6,10 +6,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   belongs_to :parent, class_name: 'User', optional: true
   has_many :children, class_name: 'User', foreign_key: 'parent_id'
-
   has_many :investments
+  has_many :wallets
+
+
   after_create :assign_default_role
   before_create :generate_user_code
+  after_create :create_wallets
+
+  def wallet_by_type(type_name)
+    wallets.joins(:wallet_type).find_by(wallet_types: { name_type: type_name })
+  end
 
   def all_descendants
     children.each_with_object(children.to_a) do |child, descendants|
@@ -18,6 +25,16 @@ class User < ApplicationRecord
   end
 
   private
+
+  def create_wallets
+    return false if wallets.present?
+    ActiveRecord::Base.transaction do
+      WalletType::WALLET_TYPES.each do |type|
+        wallet_type = WalletType.find_by(name_type: type)
+        Wallet.create!(user_id: self.id, wallet_type_id: wallet_type.id)
+      end
+    end
+  end
 
   def generate_user_code
     loop do

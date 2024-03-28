@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_27_170649) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
   create_table "cryptos", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
@@ -26,6 +26,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_170649) do
     t.integer "period"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.string "status"
     t.index ["crypto_id"], name: "index_investments_on_crypto_id"
     t.index ["user_id"], name: "index_investments_on_user_id"
   end
@@ -39,6 +42,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_170649) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "wallet_id", null: false
+    t.integer "user_id", null: false
+    t.integer "investment_id"
+    t.decimal "amount", precision: 10, scale: 2
+    t.string "transaction_type"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["investment_id"], name: "index_transactions_on_investment_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
+    t.index ["wallet_id"], name: "index_transactions_on_wallet_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -64,4 +81,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_27_170649) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "wallet_types", force: :cascade do |t|
+    t.string "name_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "wallets", force: :cascade do |t|
+    t.string "name"
+    t.decimal "amount", precision: 10, scale: 2, default: "0.0"
+    t.integer "user_id", null: false
+    t.integer "wallet_type_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wallets_on_user_id"
+    t.index ["wallet_type_id"], name: "index_wallets_on_wallet_type_id"
+  end
+
+  add_foreign_key "transactions", "investments"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "transactions", "wallets"
+  add_foreign_key "wallets", "users"
+  add_foreign_key "wallets", "wallet_types"
 end

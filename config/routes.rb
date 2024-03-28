@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'children/index'
-  resources :investments, only: [:new, :create]
+  resources :investments, only: [:new, :create, :index, :show]
   resources :childrens, only: :index
 
   resources :cryptocurrencies do
