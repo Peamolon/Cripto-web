@@ -2,7 +2,7 @@ module Investments
   class InvestmentCreator
     include ActiveModel::Model
 
-    attr_accessor :amount, :period, :crypto_id, :user_id
+    attr_accessor :amount, :period, :crypto_id, :user_id, :calculated_benefit
 
     validates :amount, numericality: { greater_than: 0 }
     validates :period, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 12 }
@@ -10,17 +10,21 @@ module Investments
     validates :user_id, presence: true
 
     def initialize(attributes={})
-
       super
     end
 
     def call
       return false unless valid?
       ActiveRecord::Base.transaction do
-        investment = create_investment
+        user = User.find(user_id)
+        wallet = user.wallet_by_type(WalletType::INVESTMENT)
+        investment = create_investment(wallet)
+
         return false unless investment
 
-        create_transaction(investment)
+        add_amount_to_wallet(wallet)
+
+        create_profit_transactions(user.id, calculated_benefit, period, investment)
         true
       end
     rescue => e
@@ -30,26 +34,25 @@ module Investments
 
     private
 
-    def create_investment
+    def create_profit_transactions(user_id, calculated_total_amount, period, investment)
+      ::Investments::ProfitGeneratorService.new(user_id, calculated_total_amount, period, investment).call
+    end
+
+    def create_investment(wallet)
       Investment.create!(
         amount: amount,
         period: period,
         crypto_id: crypto_id,
         user_id: user_id,
         start_date: Date.today,
-        end_date: period.to_i.months.from_now
+        end_date: period.to_i.months.from_now,
+        wallet_id: wallet.id
       )
     end
 
-    def create_transaction(investment)
-      wallet = User.find(user_id).wallet_by_type(WalletType::INVESTMENT)
-      Transaction.create!(
-        user_id: user_id,
-        investment_id: investment.id,
-        wallet_id: wallet.id,
-        amount: amount,
-        transaction_type: Transaction::INVESTMENT
-      )
+    def add_amount_to_wallet(wallet)
+      new_amount = wallet.amount + amount.to_f
+      wallet.update(amount: new_amount)
     end
   end
 end

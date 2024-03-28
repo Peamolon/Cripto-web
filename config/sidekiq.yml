@@ -1,4 +1,3 @@
----
 :concurrency: 10
 :queues:
   - default
@@ -11,3 +10,8 @@
       class: UpdateCryptocurrencyPricesJob
       queue: default
       description: "Job to update crypto prices in real life"
+    update_profir_status:
+      cron: "0 0 * * *"
+      class: MarkProfitsAsPaidWorker
+      queue: default
+      description: "This job marks profits as paid and updates wallet balances at midnight."

@@ -1,7 +1,8 @@
 class Investment < ApplicationRecord
   belongs_to :user
   belongs_to :crypto
-  has_many :transactions
+  belongs_to :wallet
+  has_many :profits
   include AASM
 
   validates :amount, presence: true, numericality: { greater_than: 0 }
@@ -10,9 +11,16 @@ class Investment < ApplicationRecord
   aasm column: 'status' do
     state :in_progress, initial: true
     state :finished
+    state :released
 
-    event :complete do
+    event :complete, after: :pay_all_profits do
       transitions from: :in_progress, to: :finished
     end
+  end
+
+  private
+
+  def pay_all_profits
+    profits.map(&:pay!)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_211916) do
   create_table "cryptos", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
@@ -20,17 +20,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
   end
 
   create_table "investments", force: :cascade do |t|
-    t.decimal "amount", precision: 10, scale: 2
+    t.decimal "amount"
     t.integer "user_id", null: false
     t.integer "crypto_id", null: false
     t.integer "period"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string "status"
+    t.integer "wallet_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "start_date"
-    t.date "end_date"
-    t.string "status"
+    t.float "crypto_taken_value"
     t.index ["crypto_id"], name: "index_investments_on_crypto_id"
     t.index ["user_id"], name: "index_investments_on_user_id"
+    t.index ["wallet_id"], name: "index_investments_on_wallet_id"
+  end
+
+  create_table "profits", force: :cascade do |t|
+    t.string "status"
+    t.decimal "amount"
+    t.date "paid_date"
+    t.integer "investment_id", null: false
+    t.integer "wallet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["investment_id"], name: "index_profits_on_investment_id"
+    t.index ["wallet_id"], name: "index_profits_on_wallet_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -48,7 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
     t.integer "wallet_id", null: false
     t.integer "user_id", null: false
     t.integer "investment_id"
-    t.decimal "amount", precision: 10, scale: 2
+    t.decimal "amount"
     t.string "transaction_type"
     t.datetime "date"
     t.datetime "created_at", null: false
@@ -89,7 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
 
   create_table "wallets", force: :cascade do |t|
     t.string "name"
-    t.decimal "amount", precision: 10, scale: 2, default: "0.0"
+    t.decimal "amount", default: "0.0"
     t.integer "user_id", null: false
     t.integer "wallet_type_id", null: false
     t.datetime "created_at", null: false
@@ -98,6 +113,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_175630) do
     t.index ["wallet_type_id"], name: "index_wallets_on_wallet_type_id"
   end
 
+  add_foreign_key "investments", "wallets"
+  add_foreign_key "profits", "investments"
+  add_foreign_key "profits", "wallets"
   add_foreign_key "transactions", "investments"
   add_foreign_key "transactions", "users"
   add_foreign_key "transactions", "wallets"

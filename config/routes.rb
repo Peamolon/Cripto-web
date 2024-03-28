@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :investments, only: [:new, :create, :index, :show]
   resources :childrens, only: :index
 
+  get 'wallets/:id', to: 'wallets#show', as: 'wallet'
+
   resources :cryptocurrencies do
     collection do
       get 'export_csv'

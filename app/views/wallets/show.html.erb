@@ -1,0 +1,108 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><%= @wallet.type %> Wallet</h4>
+        </div>
+        <div class="card-body">
+          <h5 class="balance-info-title">Your Balance:</h5>
+          <p class="balance-info-amount display-4">$<%= @wallet.amount %></p>
+
+          <% if @wallet_type == 'Investment' %>
+            <div class="balance-info mt-3">
+              <h5>Your Total Investment:</h5>
+              <p class="text-success"><strong>$<%= @total_investment %></strong></p>
+            </div>
+          <% elsif @wallet_type == 'Profit' %>
+            <div class="balance-info mt-3">
+              <h5>Your Total Profit:</h5>
+              <p class="text-info"><strong>$<%= @total_profit %></strong></p>
+            </div>
+            <div class="balance-info">
+              <h5>Your Paid Profit:</h5>
+              <p class="text-warning"><strong>$<%= @total_paid_profit %></strong></p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          RECENT INVESTMENTS
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>CURRENCY</th>
+              <th>AMOUNT</th>
+              <th>PERIOD</th>
+              <% if @wallet_type == 'Investment' %>
+                <th>START DATE</th>
+                <th>END DATE</th>
+              <% elsif @wallet_type == 'Profit' %>
+                <th>PAID TIME</th>
+              <% end %>
+              <th>STATUS</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if @wallet_type == 'Investment' %>
+              <% @investments.each do |investment| %>
+                <tr>
+                  <td>
+                    <%= image_tag "#{investment.crypto.symbol.upcase}.png", alt: investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+                    <%= investment.crypto.name %>
+                  </td>
+                  <td><%= number_to_currency(investment.amount) %></td>
+                  <td><%= pluralize(investment.period, 'month') %></td>
+                  <td><%= investment.start_date.strftime("%Y-%m-%d") %></td>
+                  <td><%= investment.end_date.strftime("%Y-%m-%d") %></td>
+                  <td><span class="badge <%= transaction_status_class(investment.status) %>"><%= investment.status %></span></td>
+                  <td>
+                    <% if investment.status == 'finished' %>
+                      <%= link_to 'Release', root_path, class: 'btn btn-danger' %>
+                    <% else %>
+                      <%= link_to 'Release', "#", class: 'btn btn-danger disabled', tabindex: "-1", aria_disabled: "true" %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            <% elsif @wallet_type == 'Profit' %>
+              <% @profits.each do |profit| %>
+                <tr>
+                  <td>
+                    <%= image_tag "#{profit.investment.crypto.symbol.upcase}.png", alt: profit.investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+                    <%= profit.investment.crypto.name %>
+                  </td>
+                  <td><%= number_to_currency(profit.amount) %></td>
+                  <td><%= pluralize(profit.investment.period, 'month') %></td>
+                  <td><%= profit.paid_date.strftime("%Y-%m-%d") %></td>
+                  <td><span class="badge <%= transaction_status_class(profit.status) %>"><%= profit.status %></span></td>
+                </tr>
+              <% end %>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% if @wallet_type == 'Investment' %>
+        <div class="row">
+          <div class="col-12 p-3">
+            <%= paginate @investments, param_name: 'investment_page' %>
+          </div>
+        </div>
+      <% elsif @wallet_type == 'Profit' %>
+        <div class="row">
+          <div class="col-12 p-3">
+            <%= paginate @profits, param_name: 'profit_page' %>
+          </div>
+        </div>
+      <% end %>
+      <div class="field mt-3">
+        <%= link_to 'Invest again', root_path, class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div>
+</div>

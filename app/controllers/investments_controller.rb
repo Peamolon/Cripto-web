@@ -8,9 +8,11 @@ class InvestmentsController < ApplicationController
     creator = ::Investments::InvestmentCreator.new(investment_params.merge(user_id: current_user.id))
 
     if creator.call
-      redirect_to investments_path, notice: 'Investment was successfully created.'
+      redirect_to wallet_path(current_user.wallet_by_type(WalletType::INVESTMENT).id), notice: 'Investment was successfully created.'
     else
-      flash.now[:alert] = "There was a problem creating the investment."
+      @investment = creator
+      @cryptocurrencies = Crypto.all
+      flash.now[:alert] = creator.errors.full_messages.to_sentence
       render :new, status: :unprocessable_entity
     end
   end
@@ -18,6 +20,6 @@ class InvestmentsController < ApplicationController
   private
 
   def investment_params
-    params.require(:investment).permit(:amount, :period, :crypto_id)
+    params.require(:investment).permit(:amount, :period, :crypto_id, :calculated_benefit)
   end
 end

@@ -16,9 +16,9 @@
               Wallets
             </a>
             <div class="dropdown-menu" aria-labelledby="walletDropdown">
-              <%= link_to 'Wallet 1', root_path, class: 'dropdown-item' %>
-              <%= link_to 'Wallet 2', root_path, class: 'dropdown-item' %>
-              <%= link_to 'Wallet 3', root_path, class: 'dropdown-item' %>
+              <%= link_to 'Investment Wallet', wallet_path(current_user.wallet_by_type(WalletType::INVESTMENT).id), class: 'dropdown-item' %>
+              <%= link_to 'Profit Wallet', wallet_path(current_user.wallet_by_type(WalletType::PROFIT).id), class: 'dropdown-item' %>
+              <%= link_to 'Release Wallet', wallet_path(current_user.wallet_by_type(WalletType::RELEASE).id), class: 'dropdown-item' %>
             </div>
           </li>
         <% end %>

@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :profit do
+    status { "MyString" }
+    paid_date { "2024-03-28" }
+    transaction { nil }
+  end
+
   factory :transaction do
     wallet { nil }
     user { nil }
