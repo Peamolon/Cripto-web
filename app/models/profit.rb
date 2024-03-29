@@ -9,7 +9,7 @@ class Profit < ApplicationRecord
     state :paid
     state :released
 
-    event :pay, after: :update_wallet_balance do
+    event :pay, after: :update_balance_and_distribute do
       transitions from: :not_paid, to: :paid
     end
 
@@ -20,11 +20,21 @@ class Profit < ApplicationRecord
 
   private
 
+  def update_balance_and_distribute
+    update_wallet_balance
+    distribute_bonuses
+  end
+
   def remove_wallet_balance
     wallet.update!(amount: wallet.amount - self.amount)
   end
 
   def update_wallet_balance
     wallet.update!(amount: wallet.amount + self.amount)
+
+  end
+
+  def distribute_bonuses
+    ::Rewards::PerformanceRewardService.new(self).distribute
   end
 end

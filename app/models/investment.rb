@@ -3,6 +3,7 @@ class Investment < ApplicationRecord
   belongs_to :crypto
   belongs_to :wallet
   has_many :profits
+  has_many :rewards, dependent: :destroy
   include AASM
 
   validates :amount, presence: true, numericality: { greater_than: 0 }

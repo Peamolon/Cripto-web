@@ -2,8 +2,6 @@ require 'csv'
 class WalletsController < ApplicationController
   before_action :authenticate_user!
   def show
-
-    puts "Perroooo: #{params.inspect}"
     @wallet = current_user.wallets.find(params[:id])
     @wallet_type = @wallet.type
 
@@ -22,7 +20,8 @@ class WalletsController < ApplicationController
       @total_profit = @wallet.profits.sum(:amount)
       @total_paid_profit = @wallet.profits.paid.sum(:amount)
     when 'Release'
-      @releases = @wallet.releases.order(created_at: :desc).page(params[:profit_page]).per(10)
+      @releases = @wallet.releases.order(created_at: :desc).page(params[:release_page]).per(5)
+      @rewards = @wallet.user.rewards.order(created_at: :desc).page(params[:reward_page]).per(5)
     end
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: "Wallet not found"

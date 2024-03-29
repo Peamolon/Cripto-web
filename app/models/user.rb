@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :investments
   has_many :wallets
   has_many :profits, through: :investments
+  has_many :rewards, dependent: :destroy
+  has_many :referred_rewards, class_name: 'Reward', foreign_key: 'referring_user_id', dependent: :destroy
 
 
   after_create :assign_default_role
@@ -23,6 +25,13 @@ class User < ApplicationRecord
     children.each_with_object(children.to_a) do |child, descendants|
       descendants.concat(child.all_descendants)
     end
+  end
+
+  def all_ancestors(ancestors = [])
+    return ancestors unless parent
+
+    ancestors << parent
+    parent.all_ancestors(ancestors)
   end
 
   private
