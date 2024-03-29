@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :children, class_name: 'User', foreign_key: 'parent_id'
   has_many :investments
   has_many :wallets
+  has_many :profits, through: :investments
 
 
   after_create :assign_default_role

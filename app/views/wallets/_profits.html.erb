@@ -1,0 +1,16 @@
+<div class="table-responsive pb-3">
+  <%= link_to 'Export to CSV', export_profits_to_csv_wallet_path(wallet,format: :csv), class: 'btn btn-info' %>
+  <%= link_to 'Export to JSON', export_profits_to_json_wallet_path(wallet, format: :json), class: 'btn btn-info' %>
+</div>
+<% profits.each do |profit| %>
+  <tr>
+    <td>
+      <%= image_tag "#{profit.investment.crypto.symbol.upcase}.png", alt: profit.investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+      <%= profit.investment.crypto.name %>
+    </td>
+    <td><%= number_to_currency(profit.amount) %></td>
+    <td><%= pluralize(profit.investment.period, 'month') %></td>
+    <td><%= profit.paid_date.strftime("%Y-%m-%d") %></td>
+    <td><span class="badge <%= transaction_status_class(profit.status) %>"><%= profit.status.capitalize %></span></td>
+  </tr>
+<% end %>

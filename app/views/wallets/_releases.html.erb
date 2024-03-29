@@ -1,0 +1,16 @@
+<div class="table-responsive pb-3">
+  <%= link_to 'Export to CSV', export_releases_to_csv_wallet_path(wallet,format: :csv), class: 'btn btn-info' %>
+  <%= link_to 'Export to JSON', export_releases_to_json_wallet_path(wallet, format: :json), class: 'btn btn-info' %>
+</div>
+<% releases.each do |release| %>
+  <tr>
+    <td>
+      <%= image_tag "#{release.investment.crypto.symbol.upcase}.png", alt: release.investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+      <%= release.investment.crypto.name %>
+    </td>
+    <td><%= number_to_currency(release.amount) %></td>
+    <td><%= number_to_currency(release.profit_amount) %></td>
+    <td><%= number_to_currency((release.profit_amount + release.amount)) %></td>
+    <td><%= release.received_at.strftime("%Y-%m-%d") %></td>
+  </tr>
+<% end %>

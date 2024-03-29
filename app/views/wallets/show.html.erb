@@ -1,92 +1,66 @@
 <div class="container py-5">
   <div class="row">
     <div class="col-md-12">
+      <!-- Tarjeta de Información de la Wallet -->
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-primary text-white">
           <h4 class="mb-0"><%= @wallet.type %> Wallet</h4>
         </div>
         <div class="card-body">
-          <h5 class="balance-info-title">Your Balance:</h5>
-          <p class="balance-info-amount display-4">$<%= @wallet.amount %></p>
-
+          <h5>Your Balance:</h5>
+          <p class="display-4"><%= number_to_currency(@wallet.amount) %></p>
+          <!-- Información adicional según el tipo de Wallet -->
           <% if @wallet_type == 'Investment' %>
-            <div class="balance-info mt-3">
-              <h5>Your Total Investment:</h5>
-              <p class="text-success"><strong>$<%= @total_investment %></strong></p>
-            </div>
+            <h5>Your Total Investment:</h5>
+            <p class="text-success"><strong><%= number_to_currency(@total_investment) %></strong></p>
           <% elsif @wallet_type == 'Profit' %>
-            <div class="balance-info mt-3">
-              <h5>Your Total Profit:</h5>
-              <p class="text-info"><strong>$<%= @total_profit %></strong></p>
-            </div>
-            <div class="balance-info">
-              <h5>Your Paid Profit:</h5>
-              <p class="text-warning"><strong>$<%= @total_paid_profit %></strong></p>
-            </div>
+            <h5>Your Total Profit:</h5>
+            <p class="text-info"><strong><%= number_to_currency(@total_profit) %></strong></p>
+            <h5>Your Paid Profit:</h5>
+            <p class="text-warning"><strong><%= number_to_currency(@total_paid_profit) %></strong></p>
           <% end %>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-header">
-          RECENT INVESTMENTS
-        </div>
+        <div class="card-header">RECENT TRANSACTIONS</div>
         <div class="card-body">
           <table class="table">
             <thead>
             <tr>
               <th>CURRENCY</th>
-              <th>AMOUNT</th>
-              <th>PERIOD</th>
               <% if @wallet_type == 'Investment' %>
+                <th>AMOUNT</th>
+                <th>PERIOD</th>
                 <th>START DATE</th>
                 <th>END DATE</th>
+                <th>STATUS</th>
               <% elsif @wallet_type == 'Profit' %>
+                <th>AMOUNT</th>
+                <th>PERIOD</th>
                 <th>PAID TIME</th>
+                <th>STATUS</th>
+              <% else %>
+                <th>INVESTED VALUE</th>
+                <th>PROFIT</th>
+                <th>TOTAL</th>
+                <th>PAID AT</th>
               <% end %>
-              <th>STATUS</th>
             </tr>
             </thead>
             <tbody>
             <% if @wallet_type == 'Investment' %>
-              <% @investments.each do |investment| %>
-                <tr>
-                  <td>
-                    <%= image_tag "#{investment.crypto.symbol.upcase}.png", alt: investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
-                    <%= investment.crypto.name %>
-                  </td>
-                  <td><%= number_to_currency(investment.amount) %></td>
-                  <td><%= pluralize(investment.period, 'month') %></td>
-                  <td><%= investment.start_date.strftime("%Y-%m-%d") %></td>
-                  <td><%= investment.end_date.strftime("%Y-%m-%d") %></td>
-                  <td><span class="badge <%= transaction_status_class(investment.status) %>"><%= investment.status %></span></td>
-                  <td>
-                    <% if investment.status == 'finished' %>
-                      <%= link_to 'Release', root_path, class: 'btn btn-danger' %>
-                    <% else %>
-                      <%= link_to 'Release', "#", class: 'btn btn-danger disabled', tabindex: "-1", aria_disabled: "true" %>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
+              <%= render partial: 'investments', locals: { investments: @investments, wallet: @wallet } %>
             <% elsif @wallet_type == 'Profit' %>
-              <% @profits.each do |profit| %>
-                <tr>
-                  <td>
-                    <%= image_tag "#{profit.investment.crypto.symbol.upcase}.png", alt: profit.investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
-                    <%= profit.investment.crypto.name %>
-                  </td>
-                  <td><%= number_to_currency(profit.amount) %></td>
-                  <td><%= pluralize(profit.investment.period, 'month') %></td>
-                  <td><%= profit.paid_date.strftime("%Y-%m-%d") %></td>
-                  <td><span class="badge <%= transaction_status_class(profit.status) %>"><%= profit.status %></span></td>
-                </tr>
-              <% end %>
+              <%= render partial: 'profits', locals: { profits: @profits, wallet: @wallet } %>
+            <% else %>
+              <%= render partial: 'releases', locals: { releases: @releases, wallet: @wallet } %>
             <% end %>
             </tbody>
           </table>
         </div>
       </div>
+
       <% if @wallet_type == 'Investment' %>
         <div class="row">
           <div class="col-12 p-3">
@@ -100,6 +74,7 @@
           </div>
         </div>
       <% end %>
+
       <div class="field mt-3">
         <%= link_to 'Invest again', root_path, class: 'btn btn-primary' %>
       </div>

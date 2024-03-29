@@ -1,0 +1,24 @@
+<div class="table-responsive pb-3">
+  <%= link_to 'Export to CSV', export_investments_to_csv_wallet_path(wallet,format: :csv), class: 'btn btn-info' %>
+  <%= link_to 'Export to JSON', export_investments_to_json_wallet_path(wallet, format: :json), class: 'btn btn-info' %>
+</div>
+<div class="pb-3">
+</div>
+<% investments.each do |investment| %>
+  <tr>
+    <td>
+      <%= image_tag "#{investment.crypto.symbol.upcase}.png", alt: investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+      <%= investment.crypto.name %>
+    </td>
+    <td><%= number_to_currency(investment.amount) %></td>
+    <td><%= pluralize(investment.period, 'month') %></td>
+    <td><%= investment.start_date.strftime("%Y-%m-%d") %></td>
+    <td><%= investment.end_date.strftime("%Y-%m-%d") %></td>
+    <td><span class="badge <%= transaction_status_class(investment.status) %>"><%= investment.status.capitalize %></span></td>
+    <td>
+      <% if investment.status == 'finished' %>
+        <%= button_to 'Release', release_investment_path(investment), method: :post, class: 'btn btn-danger' %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

@@ -16,11 +16,25 @@ class Investment < ApplicationRecord
     event :complete, after: :pay_all_profits do
       transitions from: :in_progress, to: :finished
     end
+
+    event :release, after: :update_wallet_amount do
+      transitions from: :finished, to: :released
+    end
   end
 
   private
 
+  def update_wallet_amount
+    updated_amount =  (wallet.amount - self.amount).to_f
+    wallet.update!(amount: updated_amount)
+
+    release_all_profits
+  end
+  def release_all_profits
+    profits.map(&:release!)
+  end
+
   def pay_all_profits
-    profits.map(&:pay!)
+    profits.not_paid.map(&:pay!)
   end
 end

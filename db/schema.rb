@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_28_211916) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_28_235248) do
   create_table "cryptos", force: :cascade do |t|
     t.string "name"
     t.string "symbol"
@@ -46,6 +46,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_211916) do
     t.datetime "updated_at", null: false
     t.index ["investment_id"], name: "index_profits_on_investment_id"
     t.index ["wallet_id"], name: "index_profits_on_wallet_id"
+  end
+
+  create_table "releases", force: :cascade do |t|
+    t.decimal "profit_amount"
+    t.decimal "amount"
+    t.date "received_at"
+    t.integer "wallet_id", null: false
+    t.integer "investment_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["investment_id"], name: "index_releases_on_investment_id"
+    t.index ["user_id"], name: "index_releases_on_user_id"
+    t.index ["wallet_id"], name: "index_releases_on_wallet_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -116,6 +130,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_28_211916) do
   add_foreign_key "investments", "wallets"
   add_foreign_key "profits", "investments"
   add_foreign_key "profits", "wallets"
+  add_foreign_key "releases", "investments"
+  add_foreign_key "releases", "users"
+  add_foreign_key "releases", "wallets"
   add_foreign_key "transactions", "investments"
   add_foreign_key "transactions", "users"
   add_foreign_key "transactions", "wallets"
