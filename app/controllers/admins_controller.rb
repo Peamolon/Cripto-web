@@ -3,7 +3,7 @@ class AdminsController < ApplicationController
   before_action :verify_admin
 
   def index
-    @investments = Investment.includes(:user, :crypto, :wallet, :profits).all
+    @investments = Investment.includes(:user, :crypto, :wallet, :profits).all.order(created_at: :desc).page(params[:page]).per(10)
   end
 
   private
