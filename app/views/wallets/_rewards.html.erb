@@ -1,0 +1,30 @@
+<div class="card mt-4">
+  <div class="card-header">REWARDS</div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>From user</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @rewards.each do |reward| %>
+        <tr>
+          <td><%= reward.reward_type %></td>
+          <td><%= number_to_currency(reward.amount) %></td>
+          <td><%= reward.awarded_at.strftime("%Y-%m-%d") %></td>
+          <td><%= reward.referring_user.email %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row p-4">
+  <div class="col-12 p-3">
+    <%= paginate @rewards, param_name: 'reward_page' %>
+  </div>
+</div>

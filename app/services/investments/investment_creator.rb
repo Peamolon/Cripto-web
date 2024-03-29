@@ -25,6 +25,16 @@ module Investments
         add_amount_to_wallet(wallet)
 
         create_profit_transactions(user.id, calculated_benefit, period, investment)
+
+        if user.parent_id.present?
+          reward_created = ::Investments::RewardCreator.new(
+            investment_id: investment.id,
+            referring_user_id: user.parent_id
+          ).call
+
+          return false unless reward_created
+        end
+
         true
       end
     rescue => e

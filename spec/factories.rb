@@ -1,4 +1,24 @@
 FactoryBot.define do
+  factory :reward do
+    user { nil }
+    bonus_type { "MyString" }
+    amount { "9.99" }
+    awarded_at { "2024-03-29 09:46:24" }
+    investment { nil }
+    referring_user_id { 1 }
+  end
+
+
+  factory :user_bonu do
+    user { nil }
+    bonus_type { "MyString" }
+    amount { "9.99" }
+    awarded_at { "2024-03-29 09:44:27" }
+    investment { nil }
+    referring_user_id { 1 }
+  end
+
+
   factory :release do
     profit_amount { "9.99" }
     amount { "9.99" }

@@ -59,6 +59,17 @@
             </tbody>
           </table>
         </div>
+        <% if @wallet_type == 'Release' %>
+          <div class="row pl-4">
+            <div class="col-12 p-3">
+              <%= paginate @releases, param_name: 'release_page' %>
+            </div>
+          </div>
+        <%end %>
+
+        <% if @wallet_type == 'Release' && @rewards.present? %>
+          <%= render 'rewards', locals: { rewards: @rewards, wallet: @wallet } %>
+        <% end %>
       </div>
 
       <% if @wallet_type == 'Investment' %>

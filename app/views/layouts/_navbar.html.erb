@@ -23,13 +23,16 @@
           </li>
         <% elsif current_user.has_role? :admin %>
           <li class="nav-item">
-            <%= link_to 'Eres admin', root_path, class: 'nav-link', 'data-turbolinks' => false %>
+            <%= link_to 'HELLO ADMIN', "#", class: 'nav-link', 'data-turbolinks' => false %>
           </li>
         <% end %>
       <% end %>
     </ul>
     <ul class="navbar-nav">
       <% if user_signed_in? %>
+        <li class="nav-item" style="margin-right: 2em;">
+          <%= link_to "#{current_user.email}", '#', class: 'nav-link', 'data-turbolinks' => false %>
+        </li>
         <li class="nav-item">
           <%= button_to 'Sign off', destroy_user_session_path, method: :delete, form: {class: "d-inline"}, class: 'btn btn-link nav-link', style: "padding-left: 0; padding-right: 0; border: none; box-shadow: none;" %>
         </li>
