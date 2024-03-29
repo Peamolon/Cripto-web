@@ -4,6 +4,7 @@ class AdminsController < ApplicationController
 
   def index
     @investments = Investment.includes(:user, :crypto, :wallet, :profits).all.order(created_at: :desc).page(params[:page]).per(10)
+    @totals_by_type = Wallet.joins(:wallet_type).group('wallet_types.name_type').sum(:amount)
   end
 
   private

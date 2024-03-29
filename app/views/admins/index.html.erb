@@ -1,8 +1,17 @@
-<!-- app/views/admin/investments/index.html.erb -->
 <div class="container mt-5">
   <div class="row justify-content-center">
+    <% @totals_by_type.each do |type, total| %>
+      <div class="col-md-4 mb-3">
+        <div class="card text-black">
+          <div class="card-header"><%= type %> wallet</div>
+          <div class="card-body">
+            <h5 class="card-title">Global Amount</h5>
+            <p class="card-text display-4"><%= number_to_currency(total) %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
     <div class="col-md-10">
-      <h1 class="mb-4">Investment Dashboard</h1>
       <div id="simulationDate" class="text-center font-weight-bold text-primary mb-3">
       </div>
       <button id="simulateBtn" class="btn btn-warning mb-3">Simulate Profits</button>
