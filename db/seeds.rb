@@ -25,3 +25,7 @@ WALLET_TYPES = %w[
 ].freeze
 
 WALLET_TYPES.map{|type|  WalletType.create!(name_type: type)}
+
+user = User.create(email: 'admin@admin.com', password: '12345678')
+user.add_role :admin
+user.remove_role :investor

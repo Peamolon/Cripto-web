@@ -21,6 +21,10 @@
               <%= link_to 'Release Wallet', wallet_path(current_user.wallet_by_type(WalletType::RELEASE).id), class: 'dropdown-item' %>
             </div>
           </li>
+        <% elsif current_user.has_role? :admin %>
+          <li class="nav-item">
+            <%= link_to 'Eres admin', root_path, class: 'nav-link', 'data-turbolinks' => false %>
+          </li>
         <% end %>
       <% end %>
     </ul>

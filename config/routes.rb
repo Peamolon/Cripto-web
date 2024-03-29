@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'admins/index'
   get 'children/index'
   resources :investments, only: [:new, :create, :index, :show] do
     post 'release', on: :member
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
   resources :childrens, only: :index
 
   get 'wallets/:id', to: 'wallets#show', as: 'wallet'
+
+  get 'admin', to: 'admins#index'
 
   resources :wallets do
     member do
@@ -27,7 +30,8 @@ Rails.application.routes.draw do
       get 'export_json'
     end
   end
-  root "cryptocurrencies#index"
+
+  root to: 'home#index'
   devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

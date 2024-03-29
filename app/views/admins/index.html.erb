@@ -1,0 +1,88 @@
+<!-- app/views/admin/investments/index.html.erb -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h1 class="mb-4">Investment Dashboard</h1>
+      <div id="simulationDate" class="text-center font-weight-bold text-primary mb-3">
+      </div>
+      <button id="simulateBtn" class="btn btn-warning mb-3">Simulate Profits</button>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-dark">
+          <tr>
+            <th>User</th>
+            <th>Cryptocurrency</th>
+            <th>Invested Amount</th>
+            <th>Period</th>
+            <th>Monthly Return</th>
+            <th>Projected Profit</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @investments.each do |investment| %>
+            <tr>
+              <td><%= investment.user.email %></td>
+              <td>
+                <%= image_tag "#{investment.crypto.symbol.upcase}.png", alt: investment.crypto.name, style: "width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;" %>
+                <%= investment.crypto.name %>
+              </td>
+              <td data-amount="<%= investment.amount %>"><%= number_to_currency(investment.amount) %></td>
+              <td><%= pluralize(investment.period, 'month') %></td>
+              <td data-return="<%= investment.crypto.monthly_return %>"><%= investment.crypto.monthly_return %>%</td>
+              <td data-profit="0">$0.00</td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let currentMonth = new Date();
+        updateSimulationDate();
+
+        document.getElementById("simulateBtn").addEventListener("click", function() {
+            const rows = document.querySelectorAll("table tbody tr");
+
+            rows.forEach(row => {
+                const amount = parseFloat(row.querySelector('[data-amount]').getAttribute('data-amount'));
+                const monthlyReturn = parseFloat(row.querySelector('[data-return]').getAttribute('data-return'));
+                let profit = parseFloat(row.querySelector('[data-profit]').getAttribute('data-profit'));
+                const period = parseInt(row.getAttribute('data-period'));
+                let monthsSimulated = parseInt(row.getAttribute('data-months-simulated'));
+
+                const newProfit = amount * (monthlyReturn / 100);
+                profit += newProfit;
+                row.querySelector('[data-profit]').innerText = `$${profit.toFixed(2)}`;
+                row.querySelector('[data-profit]').setAttribute('data-profit', profit);
+
+                monthsSimulated += 1;
+                row.setAttribute('data-months-simulated', monthsSimulated);
+
+                if (monthsSimulated >= period) {
+                    const tbody = row.parentNode;
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `<td colspan="5" class="text-center text-success">Investment Finished</td>`;
+                    tbody.insertBefore(newRow, row.nextSibling);
+                    row.classList.add('table-secondary');
+                }
+            });
+
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            updateSimulationDate();
+        });
+
+        function updateSimulationDate() {
+            const options = { month: 'long', year: 'numeric' };
+            const formattedDate = new Intl.DateTimeFormat('en-US', options).format(currentMonth);
+            document.getElementById('simulationDate').innerText = `Simulated Profits for ${formattedDate}`;
+        }
+    });
+</script>
+
+
+

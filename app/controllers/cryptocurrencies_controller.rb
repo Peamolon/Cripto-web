@@ -4,6 +4,7 @@ class CryptocurrenciesController < ApplicationController
   before_action :set_cryptocurrencies, only: [:index, :export_csv, :export_json]
   def index
     @cryptocurrencies = ::Cryptocurrency::CryptocurrencyService.fetch_cryptocurrencies_info
+    @current_user = current_user
   end
 
   def export_csv
