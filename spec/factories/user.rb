@@ -12,7 +12,7 @@ FactoryBot.define do
     end
     after(:create) do |user, evaluator|
       WalletType::WALLET_TYPES.each do |type|
-        wallet_type = WalletType.find_by(name_type: type)
+        wallet_type = WalletType.find_or_create_by(name_type: type)
         if wallet_type
           user.wallets.create!(wallet_type: wallet_type)
         else

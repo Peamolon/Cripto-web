@@ -29,14 +29,6 @@ FactoryBot.define do
     user { nil }
   end
 
-  factory :profit do
-    wallet
-    investment
-    status { "not_paid" }
-    paid_date { "2024-03-28" }
-    amount { rand(0..100)}
-  end
-
   factory :transaction do
     wallet { nil }
     user { nil }

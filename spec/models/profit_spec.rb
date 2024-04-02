@@ -11,38 +11,33 @@ RSpec.describe Profit, type: :model do
 
     context 'initial state' do
       it 'is in not_paid state' do
-        expect(profit).to have_state(:not_paid)
+        expect(profit.status).to eq("not_paid")
       end
     end
 
     context 'pay event' do
-      before do
-        allow(profit).to receive(:update_balance_and_distribute).and_return(true)
-        profit.pay!
-      end
-
       it 'transitions from not_paid to paid' do
-        expect(profit).to transition_from(:not_paid).to(:paid).on_event(:pay)
+        profit.pay!
+        expect(profit.status).to eq("paid")
       end
 
       it 'calls update_balance_and_distribute after pay' do
-        expect(profit).to have_received(:update_balance_and_distribute)
+        expect(profit).to receive(:update_balance_and_distribute)
+        profit.pay!
       end
     end
 
     context 'release event' do
-      before do
-        profit.aasm.state = :paid # Forzar el estado a :paid para la prueba
-        allow(profit).to receive(:remove_wallet_balance).and_return(true)
-        profit.release!
-      end
-
       it 'transitions from paid to released' do
-        expect(profit).to transition_from(:paid).to(:released).on_event(:release)
+        profit.pay!
+        profit.release!
+        expect(profit.status).to eq("released")
       end
 
       it 'calls remove_wallet_balance after release' do
-        expect(profit).to have_received(:remove_wallet_balance)
+        profit.pay!
+        expect(profit).to receive(:remove_wallet_balance)
+        profit.release!
       end
     end
   end
