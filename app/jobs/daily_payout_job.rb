@@ -1,4 +1,4 @@
-class UpdateProfitStatusJob < ApplicationJob
+class DailyPayoutJob < ApplicationJob
   queue_as :default
 
   def perform(*args)

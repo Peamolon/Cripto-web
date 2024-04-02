@@ -10,8 +10,8 @@
       class: UpdateCryptocurrencyPricesJob
       queue: default
       description: "Job to update crypto prices in real life"
-    update_profir_status:
+    daily_payout:
       cron: "0 0 * * *"
-      class: MarkProfitsAsPaidWorker
+      class: DailyPayoutJob
       queue: default
       description: "This job marks profits as paid and updates wallet balances at midnight."

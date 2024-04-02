@@ -1,22 +1,5 @@
 FactoryBot.define do
 
-  factory :wallet_release do
-    name { "rele" }
-    user { nil }
-    wallet_type { nil }
-  end
-
-  factory :wallet_investment do
-    name { "rele" }
-    user { nil }
-    wallet_type { nil }
-  end
-
-  factory :wallet_profit do
-    name { "rele" }
-    user { nil }
-    wallet_type { nil }
-  end
 
   factory :reward do
     user { nil }
@@ -60,12 +43,6 @@ FactoryBot.define do
     amount { "9.99" }
     transaction_type { "MyString" }
     date { "2024-03-28 12:56:30" }
-  end
-
-  factory :wallet do
-    name { "rele" }
-    user { nil }
-    wallet_type { nil }
   end
 
   factory :waller do
