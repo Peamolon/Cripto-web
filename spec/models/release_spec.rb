@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Release, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "Test relationships" do
+    it { is_expected.to belong_to(:wallet) }
+    it { is_expected.to belong_to(:investment) }
+    it { is_expected.to belong_to(:user) }
+  end
 end

@@ -17,7 +17,7 @@ module Cryptocurrency
 
     def self.broadcast_updated_prices
       Crypto.all.each do |crypto|
-        data = ::Coinapi::CoinapiClient.fetch_cryptocurrency_data(crypto.symbol)
+        data = ::Coinapi::CoinapiClient.fake_cryptocurrency_data(crypto.symbol)
         ActionCable.server.broadcast(
           "cryptocurrencies_channel",
           {
