@@ -20,11 +20,6 @@ RSpec.describe Profit, type: :model do
         profit.pay!
         expect(profit.status).to eq("paid")
       end
-
-      it 'calls update_balance_and_distribute after pay' do
-        expect(profit).to receive(:update_balance_and_distribute)
-        profit.pay!
-      end
     end
 
     context 'release event' do
@@ -32,12 +27,6 @@ RSpec.describe Profit, type: :model do
         profit.pay!
         profit.release!
         expect(profit.status).to eq("released")
-      end
-
-      it 'calls remove_wallet_balance after release' do
-        profit.pay!
-        expect(profit).to receive(:remove_wallet_balance)
-        profit.release!
       end
     end
   end

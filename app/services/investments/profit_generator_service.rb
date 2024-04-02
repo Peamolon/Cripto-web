@@ -1,6 +1,5 @@
 module Investments
   class ProfitGeneratorService
-    PROFIT = 'Profit'.freeze
 
     def initialize(user_id, calculated_total_amount, period, investment)
       @user = User.find(user_id)

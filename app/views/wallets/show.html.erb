@@ -16,8 +16,6 @@
           <% elsif @wallet_type == 'Profit' %>
             <h5>Your Total Profit:</h5>
             <p class="text-info"><strong><%= number_to_currency(@total_profit) %></strong></p>
-            <h5>Your Paid Profit:</h5>
-            <p class="text-warning"><strong><%= number_to_currency(@total_paid_profit) %></strong></p>
           <% end %>
         </div>
       </div>
@@ -75,7 +73,7 @@
       <% if @wallet_type == 'Investment' %>
         <div class="row">
           <div class="col-12 p-3">
-            <%= paginate @investments, param_name: 'investment_page' %>
+            <%= paginate @investments, params: { crypto_id: params[:crypto_id] }, remote: true %>
           </div>
         </div>
       <% elsif @wallet_type == 'Profit' %>
