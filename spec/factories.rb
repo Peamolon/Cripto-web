@@ -1,4 +1,23 @@
 FactoryBot.define do
+
+  factory :wallet_release do
+    name { "rele" }
+    user { nil }
+    wallet_type { nil }
+  end
+
+  factory :wallet_investment do
+    name { "rele" }
+    user { nil }
+    wallet_type { nil }
+  end
+
+  factory :wallet_profit do
+    name { "rele" }
+    user { nil }
+    wallet_type { nil }
+  end
+
   factory :reward do
     user { nil }
     bonus_type { "MyString" }
@@ -28,9 +47,11 @@ FactoryBot.define do
   end
 
   factory :profit do
-    status { "MyString" }
+    wallet
+    investment
+    status { "not_paid" }
     paid_date { "2024-03-28" }
-    transaction { nil }
+    amount { rand(0..100)}
   end
 
   factory :transaction do
@@ -42,13 +63,9 @@ FactoryBot.define do
   end
 
   factory :wallet do
-    name { "MyString" }
+    name { "rele" }
     user { nil }
     wallet_type { nil }
-  end
-
-  factory :wallet_type do
-    name_type { "MyString" }
   end
 
   factory :waller do
@@ -60,10 +77,7 @@ FactoryBot.define do
     
   end
 
-  factory(:user) do
-    email { Faker::Internet.email }
-    password { Faker::Internet.password }
-  end
+
 
   factory :crypto do
     name { 'Bitcoin' }

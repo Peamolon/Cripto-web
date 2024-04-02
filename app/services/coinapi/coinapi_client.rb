@@ -21,9 +21,9 @@ module Coinapi
 
     def self.fake_cryptocurrency_data(symbol)
       mock_responses = {
-        "BTC" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "BTC", "asset_id_quote" => "USD", "rate" => 67692.99559060749},
-        "ETH" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "ETH", "asset_id_quote" => "USD", "rate" => 2300.50}, # Ejemplo
-        "ADA" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "ADA", "asset_id_quote" => "USD", "rate" => 1.25} # Ejemplo
+        "BTC" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "BTC", "asset_id_quote" => "USD", "rate" => (rand * (70000 - 67692) + 67692).round(2)},
+        "ETH" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "ETH", "asset_id_quote" => "USD", "rate" => (rand * (2350 - 2200) + 2350).round(2)},
+        "ADA" => {"time" => "2024-03-20T21:47:19.0000000Z", "asset_id_base" => "ADA", "asset_id_quote" => "USD", "rate" => (rand * (2 - 1) + 2).round(2)}
       }
 
       mock_responses[symbol]

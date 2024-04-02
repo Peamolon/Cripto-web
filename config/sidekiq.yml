@@ -6,7 +6,7 @@
   enabled: true
   schedule:
     update_cryptocurrency_prices:
-      every: ['10s', first_in: '0s']
+      every: ['2s', first_in: '0s']
       class: UpdateCryptocurrencyPricesJob
       queue: default
       description: "Job to update crypto prices in real life"
